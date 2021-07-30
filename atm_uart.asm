@@ -7,7 +7,6 @@
 		endm
 
 		macro getbyte
-;Проверка готовности 80-100мкс, без нее плывем
 chk_rec:
 		ld	a, #55	;подать комнаду контроллеру клавиатуры
 		in	a, (#0FE)
@@ -20,8 +19,6 @@ chk_rec:
 		ld	a, #02	;команда - чтение 
 		in	a, (#0FE)
 		endm
-
-
 init:
 ;инициализируем порт
 		di
@@ -33,19 +30,16 @@ init:
 		in	a,(#0FE)
 		ei
 		ret
-
-
 read:
 		di
 read2:
 		getqueue			;Получили число байт в буфере
 		or a
 		jp nz,togetb
-		call z, startrts2
+		call startrts2
 		jp read2
 togetb:		
 		getbyte				;Получаем байт в А
-
 		ei
 		ret	
 		
@@ -109,7 +103,6 @@ startrts2
 		in	a,(#0FE)
 		ld	a, #03		;Параметры - убрать RTS (START)
 		in	a, (#0FE)
-		;call delay
 		EX (SP),HL
 		EX (SP),HL
 		ld	a,#55		;подать комнаду контроллеру клавиатуры
