@@ -20,7 +20,7 @@ struct process
 
 void initall(void)
 {
-unsigned char c1;
+unsigned char c1, c2;
 for (c1 = 1; c1 < 16; c1++)
 {
 
@@ -92,7 +92,7 @@ for (c1 = 1; c1 < 16; c1++)
 	AT(36,4);
 	ATRIB(33);
 	puts("TASK MANAGER");
-	BOX(20, 5, 50,prccount, 43);
+	BOX(12, 5, 50,prccount, 43);
 c2=1;
 for (c1 = 1; c1 < 16; c1++)
 {
@@ -136,4 +136,3 @@ for (c1 = 1; c1 < 16; c1++)
 
 	return 0;
 }   
-
