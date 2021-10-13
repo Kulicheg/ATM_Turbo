@@ -17,13 +17,16 @@ struct process
   unsigned char window_3;
 } table[16];
 
+    int procnum, prccount;
+    unsigned char c1, c2, pgbak;
+    unsigned char procname;
+
 
 void initall(void)
 {
   unsigned char c1, c2;
   for (c1 = 1; c1 < 16; c1++)
   {
-
     table[c1].nomer    = 0;
     table[c1].window_0 = 0;
     table[c1].window_1 = 0;
@@ -37,57 +40,8 @@ void initall(void)
   }
 }
 
-C_task main (int argc, char *argv[])
+void redraw(void)
 {
-  unsigned char  loop = 1;
-
-  while (loop)
-  {
-    int procnum, prccount;
-    unsigned char c1, c2, pgbak;
-    unsigned char procname;
-    union APP_PAGES main_pg;
-
-
-    initall();
-    os_initstdio();
-
-
-    main_pg.l = OS_GETMAINPAGES();
-    pgbak = main_pg.pgs.window_3;
-
-    prccount = 0;
-    for (c1 = 1; c1 < 16; c1++)
-    {
-      main_pg.l = OS_GETAPPMAINPAGES(c1);
-
-      if (errno == 0)
-      {
-        table[c1].nomer    = c1;
-        table[c1].window_0 = main_pg.pgs.window_0;
-        table[c1].window_1 = main_pg.pgs.window_1;
-        table[c1].window_2 = main_pg.pgs.window_2;
-        table[c1].window_3 = main_pg.pgs.window_3;
-        prccount++;
-        SETPG32KHIGH(table[c1].window_0);
-        memcpy(table[c1].name, (char*)(0xc080), 31);
-        SETPG32KHIGH(pgbak);
-      }
-      else
-      {
-        table[c1].nomer    = 0;
-        table[c1].window_0 = 0;
-        table[c1].window_1 = 0;
-        table[c1].window_2 = 0;
-        table[c1].window_3 = 0;
-        table[c1].name[0] = '\0';
-      }
-    }
-
-
-
-
-
     BOX(12, 4, 54, 1, 41);
     AT(36, 4);
     ATRIB(33);
@@ -113,6 +67,51 @@ C_task main (int argc, char *argv[])
         c2++;
       }
     }
+
+}
+
+C_task main (int argc, char *argv[])
+{
+  unsigned char  loop = 1;
+
+  while (loop)
+  {
+
+    union APP_PAGES main_pg;
+
+//    initall();
+    os_initstdio();
+    main_pg.l = OS_GETMAINPAGES();
+    pgbak = main_pg.pgs.window_3;
+    prccount = 0;
+    for (c1 = 1; c1 < 16; c1++)
+    {
+      main_pg.l = OS_GETAPPMAINPAGES(c1);
+
+      if (errno == 0)
+      {
+        table[c1].nomer    = c1;
+        table[c1].window_0 = main_pg.pgs.window_0;
+        table[c1].window_1 = main_pg.pgs.window_1;
+        table[c1].window_2 = main_pg.pgs.window_2;
+        table[c1].window_3 = main_pg.pgs.window_3;
+        SETPG32KHIGH(table[c1].window_0);
+        memcpy(table[c1].name, (char*)(0xc000 + COMMANDLINE), 31);
+		prccount++;
+      }
+      else
+      {
+        table[c1].nomer    = 0;
+        table[c1].window_0 = 0;
+        table[c1].window_1 = 0;
+        table[c1].window_2 = 0;
+        table[c1].window_3 = 0;
+        table[c1].name[0] = '\0';
+      }
+    }
+	SETPG32KHIGH(pgbak);
+
+	redraw();
 	putchar('\r');
 	putchar('\n');
     procname = getchar();
