@@ -254,6 +254,28 @@ OS_DROPAPP:	;e=id ; hl=result
 	ret
 	ENDMOD
 
+ 
+
+
+	MODULE OSGETPAGEOWNER	;e=page ;out: e=owner id (0=free, 0xff=system)
+	PUBLIC OS_GETPAGEOWNER
+	#include "sysdefs.asm"
+	RSEG CODE
+OS_GETPAGEOWNER:
+    push bc
+	ld c,CMD_GETPAGEOWNER
+	push de
+	push ix
+	push iy
+	call BDOS
+	LD a, e
+	pop iy
+	pop ix
+	pop de
+    pop bc
+	ret
+	ENDMOD
+
 
 
 
