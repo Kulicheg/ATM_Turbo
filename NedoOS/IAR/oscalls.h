@@ -3,7 +3,7 @@
 
 void OS_DROPAPP(unsigned char id);
 unsigned long OS_GETAPPMAINPAGES(unsigned char id);
-
+unsigned char OS_GETPAGEOWNER(unsigned char id);
 void YIELD(void);
 void OS_SETGFX(unsigned char mode);
 void OS_CLS(unsigned char color);
@@ -47,9 +47,9 @@ void conv1251to866(unsigned char * bufer);
 
 
 void exit(int e);
-unsigned char scrredraw(void);	//если приложение реагирует на событие redraw, 
-								//то необходимо определить свою функцию scrredraw
-								//возвращает подмененную кнопку, обычно 0x00
+unsigned char scrredraw(void);	//РµСЃР»Рё РїСЂРёР»РѕР¶РµРЅРёРµ СЂРµР°РіРёСЂСѓРµС‚ РЅР° СЃРѕР±С‹С‚РёРµ redraw, 
+								//С‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ РѕРїСЂРµРґРµР»РёС‚СЊ СЃРІРѕСЋ С„СѓРЅРєС†РёСЋ scrredraw
+								//РІРѕР·РІСЂР°С‰Р°РµС‚ РїРѕРґРјРµРЅРµРЅРЅСѓСЋ РєРЅРѕРїРєСѓ, РѕР±С‹С‡РЅРѕ 0x00
 #define MOUSE_BUTTON_BIT_LMB 0x01
 #define MOUSE_BUTTON_BIT_RMB 0x02
 
