@@ -28,7 +28,7 @@ void redraw(void)
 {
     unsigned char c3;
     
-    BOX(15, 5, 40, prccount, 43);
+//    BOX(14, 5, 41, prccount, 43);
     ATRIB(43);
 
     for (c3 = 0; c3 < prccount; c3++)
@@ -116,7 +116,8 @@ void filltable(void)
     AT(12, 5 + prccount);
     ATRIB(33);
     printf("    Free:%u pages     Used:%u pages  Sys:%u pages", freemem, usedmem, sysmem);
-	BOX(12, 6 + prccount, 54, 1, 40);
+	BOX(12, 6 + prccount, 54, 2, 40);
+	BOX(14, 5, 41, prccount, 43);
 }
 
 void killapp(unsigned char id)
@@ -146,7 +147,7 @@ C_task main(int argc, char *argv[])
         {
             procname = procname - '0';
             killapp(procname);
-        }
+		}
         else if (procname == '\e')
         {
             loop = 0;
