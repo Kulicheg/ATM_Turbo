@@ -124,7 +124,6 @@ void killapp(unsigned char id)
 {
 
     OS_DROPAPP(id);
-    BOX(12, 4, 58, prccount + 2, 40);
     filltable();
 }
 
