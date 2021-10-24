@@ -47,34 +47,24 @@ togetb:
 ; A - byte to write
 ; BC will be wasted
 write: 
-		di
-		push bc
-		push de		
-
-		ld  c, a		;В А получаем байт, сораняем его в C
+        di
+        ld (write_A),a ;В А получаем байт, сохраняем его
 readytx:
-		ld	a,#55		;подать комнаду контроллеру клавиатуры
-		in	a,(#0FE)
-		ld	a,#42		;команда - прочесть статус
-		in	a,(#0FE)
-		bit	 6, a		;Параметры - TX 
-		jp z,readytx			; вернуться если байта нет
-		ld  a, c
-		ei
-		PUSH	AF
-		
-		di
-		LD	BC,#55FE	;55FEh
-		IN	A,(C)		;Переход в режим команды
-		LD	B,#03		;запись
-		IN	A,(C)
-		POP	AF		
-		LD	B,A			;БАЙТ для пересылки
-		IN	A,(C)		; ->
-		pop de
-		pop bc
-		ei		
-		ret
+        ld    a,#55        ;подать комаду контроллеру клавиатуры
+        in    a,(#0FE)
+        ld    a,#42        ;команда - прочесть статус
+        in    a,(#0FE)
+        add a,a 			;bit     6, a        ;Параметры - TX 
+        jp p,readytx        ; вернуться, если байта нет
+        LD    a,#55    		;55FEh
+        IN    A,(#fe)        ;Переход в режим команды
+        LD    a,#03        ;запись
+        IN    A,(#fe)
+write_A=$+1
+        LD    a,0            ;БАЙТ для пересылки
+        IN    A,(#fe)        ; ->
+        ei
+        ret 
 
 
 stoprts
